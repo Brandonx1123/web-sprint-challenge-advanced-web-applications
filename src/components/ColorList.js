@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import EditMenu from './EditMenu'
 import { axiosWithAuth } from "../helpers/axiosWithAuth";
 import {useParams} from 'react-router-dom'
@@ -10,7 +9,7 @@ const initialColor = {
   code: { hex: "" }
 };
 
-const ColorList = ({ colors, updateColors }) => {
+const ColorList = ({ colors, updateColors, getColors }) => {
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
   const {id} = useParams()
@@ -42,19 +41,32 @@ const ColorList = ({ colors, updateColors }) => {
     })
     };
 
-  const deleteColor = color => {
-    axiosWithAuth()
-    .delete(`/colors/${color.id}`, color)
-    .then((res) =>{
-        console.log('RES WHEN HIT DELETE:', res)
-        updateColors(colors.map((item) =>{
-          return item !== color.id
-        }))
-    })
-    .catch((err) =>{
-      console.log('OOPS CANT DELETE:',err.message)
-    })
-  };
+    const deleteColor = colorToEdit => {
+      axiosWithAuth()
+      .delete(`/colors/${colorToEdit.id}`)
+      .then((res) => {
+        console.log('res when DELETING:',res)
+        getColors()
+      })
+      .catch((err) =>{
+        console.log('Error when deleting',err)
+      })
+    } 
+
+  // const deleteColor = color => {
+  //   axiosWithAuth()
+  //   .delete(`/colors/${color.id}`)
+  //   .then((res) =>{
+  //       console.log('RES WHEN HIT DELETE:', res)
+  //       setEditing(false)
+  //       updateColors(colors.filter((item) =>{
+  //         return item !== color.id
+  //       }))
+  //   })
+  //   .catch((err) =>{
+  //     console.log('OOPS CANT DELETE:',err.message)
+  //   })
+  // };
 
   return (
     <div className="colors-wrap">

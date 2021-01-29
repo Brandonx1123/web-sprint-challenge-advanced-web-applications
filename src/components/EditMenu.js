@@ -2,7 +2,7 @@ import React from 'react';
 
 const EditMenu = ({colorToEdit, saveEdit, setColorToEdit, setEditing}) => {
     return(<form onSubmit={saveEdit}>
-        <legend>edit color</legend>
+        <legend>Edit Color</legend>
         <label htmlFor="colorName">color name:</label>
         <input
           name="colorName"

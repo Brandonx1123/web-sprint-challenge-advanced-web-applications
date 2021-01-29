@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import{axiosWithAuth} from '../helpers/axiosWithAuth'
 import Bubbles from "./Bubbles";
 import ColorList from "./ColorList";
@@ -7,21 +6,28 @@ import ColorList from "./ColorList";
 const BubblePage = () => {
   const [colorList, setColorList] = useState([]);
 
-useEffect(() => {
+
+const getColors= () =>{
   axiosWithAuth()
-  .get('/colors')
-  .then((res) => {
-    console.log('this is res is in GET REQUEST',res)
-    setColorList(res.data)
-  })
-  .catch((err) => {
-    console.log('Cant get color list in GET', err)
-  })
+    .get('/colors')
+    .then((res) => {
+      console.log('this is res is in GET REQUEST',res)
+      setColorList(res.data)
+    })
+    .catch((err) => {
+      console.log('Cant get color list in GET', err)
+    })
+}
+
+
+useEffect(() => {
+  getColors()
 }, [])
+
 
   return (
     <>
-      <ColorList colors={colorList} updateColors={setColorList} />
+      <ColorList colors={colorList} updateColors={setColorList} getColors={getColors} />
       <Bubbles colors={colorList} />
     </>
   );
