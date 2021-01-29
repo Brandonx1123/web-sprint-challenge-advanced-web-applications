@@ -3,6 +3,9 @@ import { render, screen } from "@testing-library/react";
 import BubblePage from "./BubblePage";
 import Bubbles from "./Bubbles"
 import ColorList from './ColorList'
+
+
+
 const mockData = [
   {
     color: "aliceblue",
@@ -46,10 +49,12 @@ test("Fetches data and renders the bubbles on mounting", async () => {
 
   const colors = await screen.findByText(/limegreen/i);
   const secondColor= await screen.findByText(/aliceblue/i)
+  const thirdColor = await screen.findByText(/aquamarine/i)
   const bubbleOnScreen = await screen.findByTestId('bubbles');
   expect(colors).toBeInTheDocument();
   expect(bubbleOnScreen).toBeInTheDocument();
   expect(secondColor).toBeInTheDocument()
+  expect(thirdColor).toBeInTheDocument()
 });
 //Task List
 //1. Setup test for b\\\asic rendering of component
