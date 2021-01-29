@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
+import EditMenu from './EditMenu'
+import { axiosWithAuth } from "../helpers/axiosWithAuth";
+import {useParams} from 'react-router-dom'
+
 
 const initialColor = {
   color: "",
@@ -9,6 +13,7 @@ const initialColor = {
 const ColorList = ({ colors, updateColors }) => {
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
+  const {id} = useParams()
 
   const editColor = color => {
     setEditing(true);
@@ -17,10 +22,38 @@ const ColorList = ({ colors, updateColors }) => {
 
   const saveEdit = e => {
     e.preventDefault();
-
-  };
+    axiosWithAuth()
+    .put(`/colors/${colorToEdit.id}`, colorToEdit)
+    .then((res) =>{
+      console.log('Save from ColorList:',res)
+      updateColors(
+        colors.map(color => {
+      if (color.id === res.data.id) {
+            return res.data
+          } else{
+            return color
+          }
+        })
+    )
+    setEditing(false)
+      })
+    .catch((err) =>{
+      console.log(err)
+    })
+    };
 
   const deleteColor = color => {
+    axiosWithAuth()
+    .delete(`/colors/${color.id}`, color)
+    .then((res) =>{
+        console.log('RES WHEN HIT DELETE:', res)
+        updateColors(colors.map((item) =>{
+          return item !== color.id
+        }))
+    })
+    .catch((err) =>{
+      console.log('OOPS CANT DELETE:',err.message)
+    })
   };
 
   return (
