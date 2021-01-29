@@ -1,8 +1,8 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import BubblePage from "./BubblePage";
-import ColorList from "./ColorList"
-
+import Bubbles from "./Bubbles"
+import ColorList from './ColorList'
 const mockData = [
   {
     color: "aliceblue",
@@ -36,13 +36,21 @@ const mockData = [
 ]
 
 test("Renders BubblePage without errors", async () => {
-  render(<BubblePage colorList={mockData}/> )// Finish this test
+  render(<BubblePage /> )// Finish this test
 });
 
-test("Fetches data and renders the bubbles on mounting", () => {
+test("Fetches data and renders the bubbles on mounting", async () => {
   // Finish this test
-});
+  render(<ColorList colors={mockData} />);
+  render(<Bubbles colors={mockData} />);
 
+  const colors = await screen.findByText(/limegreen/i);
+  const secondColor= await screen.findByText(/aliceblue/i)
+  const bubbleOnScreen = await screen.findByTestId('bubbles');
+  expect(colors).toBeInTheDocument();
+  expect(bubbleOnScreen).toBeInTheDocument();
+  expect(secondColor).toBeInTheDocument()
+});
 //Task List
-//1. Setup test for basic rendering of component
+//1. Setup test for b\\\asic rendering of component
 //2. Setup test for initial rendering of bubbles on loading

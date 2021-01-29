@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import EditMenu from './EditMenu'
 import { axiosWithAuth } from "../helpers/axiosWithAuth";
-import {useParams} from 'react-router-dom'
+
 
 
 const initialColor = {
@@ -12,7 +12,7 @@ const initialColor = {
 const ColorList = ({ colors, updateColors, getColors }) => {
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
-  const {id} = useParams()
+  
 
   const editColor = color => {
     setEditing(true);
